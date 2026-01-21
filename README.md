@@ -7,7 +7,6 @@
 > IMPORTANT: This project is currently in active development. It is mainly intended for educational purposes. The encryption and security measures are not yet audited for production use. Do not use this with real data.
 > 
 
----
 
 ## **🛠 Tech Stack**
 
@@ -19,7 +18,6 @@
 - **Database:** PostgreSQL
 - **Containerization:** Docker & Docker Compose
 
----
 
 ## **🐋 Deploy**
 
@@ -49,7 +47,6 @@ docker compose up -d --build
 - **Frontend:** http://localhost/
 - **Backend**: http://localhost:8080
 
----
 
 If you want to stop it, use the following command:
 
@@ -61,29 +58,26 @@ docker-compose down
 docker-compose down -v
 ```
 
----
 
 ## ⚙️ Custom Configuration
 
 - **Disable Demo Mode:** Set `showDemo: false` in `bitsave-frontend/src/environments/environment.ts`.
 - **Real SMTP Mail:**
-    1. Set `SPRING_PROFILES_ACTIVE: prod` in `docker-compose.yml`
-    2. Create `application-prod.yml` in the backend with your SMTP credentials
-    
-    ```yaml
-    spring:
-    	mail:
-    		host: [smtp.gmail.com](http://smtp.gmail.com/)
-    		username: [your-email@gmail.com](mailto:your-email@gmail.com)
-    		password: your-app-password # 16-digit code
-    ```
+    1. Set `SPRING_PROFILES_ACTIVE: prod` in `docker-compose.yml`.
+    2. Create `application-prod.yml` in the backend with your SMTP credentials:
+
+       ```yaml
+       spring:
+         mail:
+           host: smtp.gmail.com
+           username: your-email@gmail.com
+           password: your-app-password # 16-digit code
+       ```
     
 
----
 
 ## 📺 Demo
 
----
 
 ## **✨ Features**
 
@@ -92,7 +86,6 @@ docker-compose down -v
 - **Customizable Password Generator:** Create high-entropy passwords with adjustable length and character sets (uppercase, lowercase, numbers, and symbols) to meet any security requirement.
 - **Light & Dark Mode Support**
 
----
 
 ## **🚀 Roadmap**
 
@@ -101,6 +94,5 @@ docker-compose down -v
 - **Data Portability (Import):** Migration tools to import data from other managers (via CSV/JSON).
 - **System Optimization & Security Hardening:** Focus on continuous performance tuning, high code-coverage testing, and architectural audits to ensure a fast, robust, and industry-standard security environment.
 
----
 
 Built with ❤️
