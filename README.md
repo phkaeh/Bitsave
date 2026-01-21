@@ -79,6 +79,10 @@ docker-compose down -v
 ## 📺 Demo
 
 
+https://github.com/user-attachments/assets/181d5386-0b5c-4faf-b310-b14abf14fe88
+
+
+
 ## **✨ Features**
 
 - **Zero-Knowledge Architecture:** Features local client-side encryption using AES-256-GCM and Argon2id key derivation, ensuring your master keys and raw data never leave your device.
