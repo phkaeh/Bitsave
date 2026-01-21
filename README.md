@@ -21,7 +21,7 @@
 
 ## **🐋 Deploy**
 
-You can deploy BitSave using Docker containers on Windows, macOS, and Linux distributions.
+You can deploy Bitsave using Docker containers on Windows, macOS, and Linux distributions.
 
 ### **Requirements**
 
