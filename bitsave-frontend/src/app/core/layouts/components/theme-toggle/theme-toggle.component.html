@@ -1,0 +1,14 @@
+<button
+      hlmBtn
+      variant="ghost"
+      size="icon"
+      (click)="toggleTheme()"
+      class="relative"
+    >
+      <ng-icon
+        [name]="isDarkMode() ? 'lucideMoon' : 'lucideSun'"
+        size="18"
+        class="transition-transform duration-200"
+      ></ng-icon>
+      <span class="sr-only">Theme wechseln</span>
+    </button>

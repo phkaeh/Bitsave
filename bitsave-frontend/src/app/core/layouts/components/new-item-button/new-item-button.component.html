@@ -1,0 +1,49 @@
+<button 
+      [hlmDropdownMenuTrigger]="newItemMenu"
+      class="px-4 py-2 bg-primary text-primary-foreground cursor-pointer rounded-md hover:bg-primary/90 flex items-center gap-2"
+    >
+      <ng-icon name="lucidePlus" size="18"></ng-icon>
+      <span>Neues Objekt</span>
+    </button>
+
+    <ng-template #newItemMenu>
+      <hlm-dropdown-menu class="w-56 border border-border">
+        
+        <button hlmDropdownMenuItem (click)="itemTypeSelected.emit(NewItemType.LOGIN)">
+          <ng-icon hlm name="lucideKey" class="mr-2" />
+          <span>Login</span>
+        </button>
+
+        
+        <button hlmDropdownMenuItem (click)="itemTypeSelected.emit(NewItemType.CREDIT_CARD)">
+          <ng-icon hlm name="lucideCreditCard" class="mr-2" />
+          <span>Kreditkarte</span>
+        </button>
+
+        
+        <button hlmDropdownMenuItem (click)="itemTypeSelected.emit(NewItemType.NOTE)">
+          <ng-icon hlm name="lucideStickyNote" class="mr-2" />
+          <span>Sichere Notiz</span>
+        </button>
+
+        
+        <button hlmDropdownMenuItem (click)="itemTypeSelected.emit(NewItemType.IDENTITY)">
+          <ng-icon hlm name="lucideUser" class="mr-2" />
+          <span>Identität</span>
+        </button>
+
+        <hlm-dropdown-menu-separator />
+
+        
+        <button hlmDropdownMenuItem (click)="itemTypeSelected.emit(NewItemType.FOLDER)">
+          <ng-icon hlm name="lucideFolder" class="mr-2" />
+          <span>Ordner</span>
+        </button>
+
+        
+        <button hlmDropdownMenuItem (click)="itemTypeSelected.emit(NewItemType.COLLECTION)">
+          <ng-icon hlm name="lucideGrid" class="mr-2" />
+          <span>Sammlung</span>
+        </button>
+      </hlm-dropdown-menu>
+    </ng-template>

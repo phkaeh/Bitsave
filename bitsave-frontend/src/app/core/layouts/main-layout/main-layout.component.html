@@ -1,0 +1,19 @@
+<app-sidebar>
+  <main hlmSidebarInset>
+    <header class="flex h-14 items-center justify-between px-4 border-b border-border">
+      <div class="flex items-center gap-4 flex-1 mr-4">
+        <button hlmSidebarTrigger>
+          <span class="sr-only">Toggle Sidebar</span>
+        </button>
+    
+        <app-searchbar class="w-full" (searchChange)="onSearch($event)"></app-searchbar>
+
+        <app-theme-toggle></app-theme-toggle>
+      </div>
+      
+      <app-new-item-button (itemTypeSelected)="onNewItemSelected($event)"/>
+    </header>
+    
+    <router-outlet></router-outlet>
+  </main>
+</app-sidebar>

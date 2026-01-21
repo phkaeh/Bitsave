@@ -1,0 +1,36 @@
+#DEMO CONFIGURATION
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:placeholder}
+    password: ${MAIL_PASSWORD:placeholder}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/jwt_security}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:create-drop}
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+jwt:
+  #This hardcoded key is for local development only.
+  SECRET_KEY: ${JWT_SECRET_KEY:cc8d022f337520cb0e9d7f8273958e80d33819efaae4ea7178188559b785c0dd}
+
+app:
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost,http://localhost:4200}

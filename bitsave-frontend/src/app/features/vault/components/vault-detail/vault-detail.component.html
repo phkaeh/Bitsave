@@ -1,0 +1,112 @@
+<div class="p-6 h-full overflow-y-auto">
+    <hlm-toaster position="top-right"></hlm-toaster>
+      <div *ngIf="!cipher()">
+         <p class="text-muted-foreground">Eintrag auswählen, um Details anzuzeigen</p>
+      </div>
+    <div *ngIf="cipher()">
+        <div class="flex items-start gap-4 mb-6">
+            
+            <div class="w-12 h-12 rounded bg-muted flex items-center justify-center shrink-0">
+                <img 
+                  [src]="cipher()!.data.website | favicon"
+                  class="w-6 h-6 object-contain"
+                >
+            </div>
+
+            <h1 class="text-2xl font-bold wrap-anywhere leading-tight 
+                w-full md:max-w-[calc(66.66%-4rem)] lg:max-w-[calc(50%-4rem)]">{{ cipher()!.data.title }}</h1>
+            
+            <div class="ml-auto flex gap-2 shrink-0">
+                <button hlmBtn variant="ghost" 
+                        size="sm"
+                        class="h-9 w-9 p-0 border border-border hover:bg-accent rounded-md flex items-center justify-center"
+                        (click)="onEdit()">
+                    <ng-icon hlm size="sm" class="text-muted-foreground" name="lucidePencil">
+                    </ng-icon>
+                </button>
+                <button hlmBtn variant="ghost" 
+                        size="sm"
+                        class="h-9 w-9 p-0 border border-border hover:bg-accent rounded-md flex items-center justify-center"
+                        (click)="toggleFavorite()">
+                    <ng-icon hlm size="sm" 
+                        [name]="cipher()!.favorite ? 'lucideStar' : 'lucideStarOff'">
+                    </ng-icon>
+                </button>
+                <button hlmBtn variant="ghost" 
+                        size="sm"
+                        class="h-9 w-9 p-0 border border-border hover:bg-accent rounded-md flex items-center justify-center"
+                        (click)="onDelete()">
+                    <ng-icon hlm size="sm" name="lucideTrash2"></ng-icon>
+                </button>
+            </div>
+        </div>
+        
+        <div class="space-y-4">
+            <button hlmBtn variant="ghost" 
+                    [cdkCopyToClipboard]="cipher()!.data.username" 
+                    (cdkCopyToClipboardCopied)="onCopied('Username')" 
+                    class="group w-full md:w-2/3 lg:w-1/2 h-auto py-2 px-3 justify-between text-left font-normal hover:bg-accent hover:text-accent-foreground cursor-pointer border border-border rounded-md flex items-center">
+                <div class="flex flex-col gap-0.5 min-w-0 flex-1">
+                    <label class="text-xs text-muted-foreground uppercase font-semibold">Benutzername</label>
+                    <div class="text-sm truncate"> {{ cipher()!.data.username }} </div>
+                </div>
+                <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 pl-2">
+                    <span class="text-xs text-muted-foreground uppercase font-semibold">Kopieren</span>
+                </div>
+            </button>
+            
+            <div class="flex w-full md:w-2/3 lg:w-1/2 gap-2 h-auto">
+                <button hlmBtn variant="ghost" 
+                        [cdkCopyToClipboard]="cipher()!.data.password" 
+                        (cdkCopyToClipboardCopied)="onCopied('Password')" 
+                        class="group flex-1 min-w-0 h-auto py-2 px-3 justify-between text-left font-normal hover:bg-accent hover:text-accent-foreground cursor-pointer border border-border rounded-md flex items-center">
+                    <div class="flex flex-col gap-0.5 min-w-0 flex-1">
+                        <label class="text-xs text-muted-foreground uppercase font-semibold">Passwort</label>
+                        <div class="text-sm truncate font-mono"> {{ showPassword() ? cipher()!.data.password : '••••••••••••••' }}</div>
+                    </div>
+                    <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 pl-2">
+                        <span class="text-xs text-muted-foreground uppercase font-semibold">Kopieren</span>
+                    </div>
+                </button>
+                <button hlmBtn variant="outline" 
+                        class="h-auto px-3 shrink-0 border-border bg-background hover:bg-accent rounded-md flex items-center justify-center"
+                        (click)="togglePassword()">
+                    <ng-icon hlm
+                        size="sm" 
+                        class="text-muted-foreground"
+                        [name]="showPassword() ? 'lucideEye' : 'lucideEyeOff'">
+                    </ng-icon>
+                </button>
+            </div>
+            
+            <div class="flex w-full md:w-2/3 lg:w-1/2 gap-2 h-auto">
+                <button hlmBtn variant="ghost" 
+                        [cdkCopyToClipboard]="cipher()!.data.website" 
+                        (cdkCopyToClipboardCopied)="onCopied('Website')" 
+                        class="group flex-1 min-w-0 h-auto py-2 px-3 justify-between text-left font-normal hover:bg-accent hover:text-accent-foreground cursor-pointer border border-border rounded-md flex items-center">
+        
+                    <div class="flex flex-col gap-0.5 min-w-0 flex-1">
+                        <label class="text-xs text-muted-foreground uppercase font-semibold"> Website </label>
+                        <div class="text-sm truncate"> {{ cipher().data.website }} </div>
+                    </div>
+
+                    <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 pl-2">
+                        <span class="text-xs text-muted-foreground uppercase font-semibold"> Kopieren </span>
+                    </div>
+                </button>
+                    <a  hlmBtn variant="outline" 
+                        [href]="cipher()!.data.website || '#'"
+                        (click)="handleWebsiteClick($event)"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="h-auto px-3 shrink-0 border-border bg-background hover:bg-accent rounded-md flex items-center justify-center">
+                        <ng-icon hlm name="lucideExternalLink" size="sm" class="text-muted-foreground"></ng-icon>
+                    </a>
+            </div>
+            <div class="w-full md:w-2/3 lg:w-1/2 mt-2" *ngIf="cipher()!.data.notes">
+                <label class="text-xs text-muted-foreground uppercase font-semibold">Notizen</label>
+                <p class="text-sm whitespace-pre-wrap wrap-anywhere leading-relaxed">{{ cipher().data.notes }}</p>
+            </div>
+        </div>
+    </div>
+</div>

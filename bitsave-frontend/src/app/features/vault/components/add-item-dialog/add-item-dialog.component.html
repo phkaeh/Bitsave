@@ -1,0 +1,53 @@
+  <hlm-dialog-header>
+    <h3 hlmDialogTitle>{{ getDialogTitle() }}</h3>
+    <p hlmDialogDescription class="text-muted-foreground">
+      {{ getTypeLabel() }}
+    </p>
+  </hlm-dialog-header>
+
+  <div class="grid gap-4 py-4 min-h-50">
+    @switch (selectedType) {
+      @case (NewItemTypes.LOGIN) {
+        <app-login-form [cipher]="cipher" [editMode]="editMode"/>
+      }
+      @case (NewItemTypes.CREDIT_CARD) {
+        <div class="py-10 text-center text-muted-foreground italic">
+          Kreditkarten-Formular folgt...
+        </div>
+      }
+      @case (NewItemTypes.NOTE) {
+        <div class="py-10 text-center text-muted-foreground italic">
+          Notiz-Formular folgt...
+        </div>
+      }
+      @case (NewItemTypes.IDENTITY) {
+        <div class="py-10 text-center text-muted-foreground italic">
+          Identitäts-Formular folgt...
+        </div>
+      }
+      @case (NewItemTypes.FOLDER) {
+        <div class="py-10 text-center text-muted-foreground italic">
+          Ordner-Formular folgt...
+        </div>
+      }
+      @case (NewItemTypes.COLLECTION) {
+        <div class="py-10 text-center text-muted-foreground italic">
+          Sammlungs-Formular folgt...
+        </div>
+      }
+      @default {
+        <div class="py-10 text-center text-muted-foreground">
+          Formular wird geladen...
+        </div>
+      }
+    }
+  </div>
+
+  <hlm-dialog-footer class="gap-2">
+    <button hlmBtn variant="outline" (click)="close()" class="border-white/10 hover:bg-white/5">
+      Abbrechen
+    </button>
+    <button hlmBtn (click)="onSave()" class="bg-secondary hover:bg-secondary-hover text-secondary-foreground px-6">
+      Speichern
+    </button>
+  </hlm-dialog-footer>

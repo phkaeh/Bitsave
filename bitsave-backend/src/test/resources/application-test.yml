@@ -1,0 +1,42 @@
+#DEMO CONFIGURATION
+spring:
+
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format_sql: true
+
+  mail:
+    host: localhost
+    port: 3025
+    username: test@example.com
+    password: password
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+jwt:
+  SECRET_KEY: dGVzdF9zZWNyZXRfa2V5X2Zvcl91bml0X3Rlc3RzX3RoYXRfaXNfbG9uZ19lbm91Z2hfZm9yX0hTMjU2
+
+app:
+  cors:
+    allowed-origins: http://localhost:4200
+
+logging:
+  level:
+    com.example.security: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: ERROR

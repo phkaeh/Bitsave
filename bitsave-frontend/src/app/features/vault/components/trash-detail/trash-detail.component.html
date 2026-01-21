@@ -1,0 +1,61 @@
+<div class="p-6 h-full overflow-y-auto">
+  <hlm-toaster position="top-right"></hlm-toaster>
+  
+  <div *ngIf="!cipher()">
+    <p class="text-muted-foreground">Wähle ein gelöschtes Item</p>
+  </div>
+  
+  <div *ngIf="cipher()">
+    <div class="flex items-start gap-4 mb-6">
+      <div class="w-12 h-12 rounded bg-muted flex items-center justify-center shrink-0">
+        <img [src]="cipher()!.data.website | favicon" class="w-6 h-6 object-contain">
+      </div>
+
+      <h1 class="text-2xl font-bold wrap-anywhere leading-tight 
+          w-full md:max-w-[calc(66.66%-4rem)] lg:max-w-[calc(50%-4rem)]">{{ cipher()!.data.title }}</h1>
+      
+      <div class="ml-auto flex gap-2 shrink-0">
+        
+        <button hlmBtn variant="ghost"  size="sm" class="gap-2 border border-border" (click)="onRestore()">
+          <ng-icon hlm size="sm" name="lucideUndo2"></ng-icon>
+          Wiederherstellen
+        </button>
+        
+        <button hlmBtn variant="destructive" size="sm" class="gap-2" (click)="onPermanentDelete()">
+          <ng-icon hlm size="sm" name="lucideTrash2"></ng-icon>
+          Endgültig löschen
+        </button>
+      </div>
+    </div>
+    
+    <div class="space-y-4">
+      <div class="w-full md:w-2/3 lg:w-1/2">
+        <label class="text-xs text-muted-foreground uppercase font-semibold">Benutzername</label>
+        <p class="text-sm wrap-anywhere">{{ cipher()!.data.username }}</p>
+      </div>
+      
+      <div class="w-full md:w-2/3 lg:w-1/2">
+        <label class="text-xs text-muted-foreground uppercase font-semibold">Passwort</label>
+        <div class="flex gap-2">
+          <p class="text-sm font-mono flex-1 wrap-anywhere">{{ '••••••••••••••' }}</p>
+        </div>
+      </div>
+      
+      <div class="w-full md:w-2/3 lg:w-1/2">
+        <label class="text-xs text-muted-foreground uppercase font-semibold">Website</label>
+        <p class="text-sm wrap-anywhere">{{ cipher()!.data.website }}</p>
+      </div>
+      
+      <div class="w-full md:w-2/3 lg:w-1/2" *ngIf="cipher()!.data.notes">
+        <label class="text-xs text-muted-foreground uppercase font-semibold">Notizen</label>
+        <p class="text-sm whitespace-pre-wrap wrap-anywhere">{{ cipher()!.data.notes }}</p>
+      </div>
+      
+      <div class="w-full md:w-2/3 lg:w-1/2 mt-4 p-4 bg-muted rounded-md">
+        <p class="text-xs text-muted-foreground">
+          Gelöscht am {{ cipher()!.deletedDate | date:'medium' }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

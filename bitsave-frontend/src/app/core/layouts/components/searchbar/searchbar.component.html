@@ -1,0 +1,16 @@
+<div class="relative w-full max-w-none bg-primary-foreground rounded-md">
+  <ng-icon 
+    name="lucideSearch" 
+    size="18" 
+    class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
+  ></ng-icon>
+  
+  <input
+    hlmInput
+    type="text" 
+    placeholder="Suchen..." 
+    class="pl-10 w-full"
+    [(ngModel)]="searchQuery"
+    (ngModelChange)="onSearchChange($event)"
+  />
+</div>

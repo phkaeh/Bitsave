@@ -1,0 +1,58 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: bitvault-db
+    environment:
+      POSTGRES_DB: jwt_security
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bitvault-network
+
+  backend:
+    build:
+      context: ./bitsave-backend
+      dockerfile: Dockerfile
+    container_name: bitvault-backend
+    environment:
+      SPRING_JPA_SHOW_SQL: false
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: jdbc:postgresql://postgres:5432/jwt_security
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      ALLOWED_ORIGINS: http://localhost
+      JPA_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - bitvault-network
+
+  frontend:
+    build:
+      context: ./bitsave-frontend
+      dockerfile: Dockerfile
+    container_name: bitvault-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - bitvault-network
+
+volumes:
+  postgres-data:
+
+networks:
+  bitvault-network:
+    driver: bridge

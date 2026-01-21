@@ -1,0 +1,26 @@
+<div class="grid grid-cols-[30%_70%] h-screen w-full overflow-hidden bg-background">
+      
+  <app-vault-list
+    [ciphers]="vaultService.filteredCiphers()"
+    [title]="pageTitle()"
+    [activeCipher]="selectedCipherWithLatestData()"
+    (selectCipher)="onSelect($event)">
+  </app-vault-list>
+
+  <div class="h-full overflow-y-auto bg-background">
+    <app-vault-detail 
+      *ngIf="!isTrashPage()"
+      [cipher]="selectedCipherWithLatestData()" 
+      (favoriteToggled)="onFavoriteToggled($event)" 
+      (editRequested)="onEdit($event)"
+      (deleteRequested)="onDelete($event)">
+    </app-vault-detail>
+
+    <app-trash-detail 
+      *ngIf="isTrashPage()"
+      [cipher]="selectedCipherWithLatestData()"
+      (restoreRequested)="onRestore($event)"
+      (permanentDeleteRequested)="onPermanentDelete($event)">
+    </app-trash-detail>
+  </div>
+</div>

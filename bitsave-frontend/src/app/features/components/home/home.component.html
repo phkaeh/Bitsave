@@ -1,0 +1,23 @@
+<div class="flex items-start justify-center min-h-screen bg-background pt-20">
+  <hlm-toaster position="top-right"></hlm-toaster>
+  <section hlmCard class="border border-border w-full max-w-sm">
+    <div hlmCardHeader>
+      <h1 hlmCardTitle class="text-center">Welcome</h1>
+    </div>
+    <div hlmCardContent class="flex flex-col gap-4">
+      <button hlmBtn (click)="onLogin()">Login</button>
+      <button hlmBtn variant="secondary" (click)="onSignup()">Sign up</button>
+
+      <ng-container *ngIf="isDemoVisible()">
+        <div class="flex items-center my-2">
+          <div class="grow h-px bg-border"></div>
+          <span class="px-2 text-[10px] text-muted-foreground uppercase">Oder</span>
+          <div class="grow h-px bg-border"></div>
+        </div>
+        <button hlmBtn variant="outline" (click)="onDemoLogin()">
+          Demo Login
+        </button>
+      </ng-container>
+    </div>
+  </section>
+</div>

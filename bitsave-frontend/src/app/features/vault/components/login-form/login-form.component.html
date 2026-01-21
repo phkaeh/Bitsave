@@ -1,0 +1,71 @@
+<div [formGroup]="loginForm" class="flex flex-col gap-4 p-4 bg-background m-4 rounded-md">
+
+      <div class="flex flex-col gap-2">
+        <label hlmLabel>Name</label>
+        <div class="flex gap-4 items-center">
+          <div class="w-12 h-12 rounded-md bg-muted flex items-center justify-center shrink-0">
+            <img 
+              [src]="(loginForm.get('website')?.value || '') | favicon"
+              class="w-6 h-6 object-contain"
+            >
+          </div>
+          <input hlmInput formControlName="title" placeholder="Log-in Titel" required/>
+        </div>
+      </div>
+      
+      <div class="flex flex-col gap-2">
+        <label hlmLabel>Benutzername</label>
+        <input hlmInput formControlName="username" placeholder="Benutzername" required />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label hlmLabel>Passwort</label>
+        <div class="relative w-full">
+          <input 
+            hlmInput 
+            [type]="showPasswordInForm() ? 'text' : 'password'"
+            formControlName="password" 
+            placeholder="Passwort" 
+            required 
+            class="pr-24"
+          />
+          <div class="absolute right-0 top-0 h-full flex items-center gap-1 pr-2">
+            <button 
+              type="button"
+              (click)="openPasswordGenerator()"
+              class="h-8 w-8 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted rounded focus:outline-none"
+              title="Passwort generieren"
+            >
+              <ng-icon hlm size="sm" name="lucideWand2"></ng-icon>
+            </button>
+            <button 
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="h-8 w-8 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted rounded focus:outline-none"
+              title="Passwort anzeigen"
+            >
+              <ng-icon hlm size="sm" [name]="showPasswordInForm() ? 'lucideEye' : 'lucideEyeOff'"></ng-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label hlmLabel>Website</label>
+        <input 
+          hlmInput 
+          formControlName="website"
+          placeholder="https://example.com" 
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label hlmLabel>Notizen</label>
+        <textarea 
+          hlmInput 
+          formControlName="notes" 
+          class="min-h-30"
+          placeholder="Notizen..."
+        ></textarea>
+      </div>
+    </div>

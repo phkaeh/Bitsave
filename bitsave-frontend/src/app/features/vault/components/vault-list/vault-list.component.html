@@ -1,0 +1,32 @@
+<div class="h-full flex flex-col bg-background border-r border-border">
+  
+  <div class="px-4 py-3 shrink-0 border-b border-border/50">
+    <h2 class="text-base font-semibold">{{ title }}</h2>
+    <p class="text-xs text-muted-foreground">{{ ciphers.length }} Objekte</p>
+  </div>
+
+  <ng-scrollbar hlm appearance="compact" class="flex-1">
+    <div class="px-2 py-2 space-y-1 pb-20">
+      @for (cipher of ciphers; track cipher.id) {
+        <div (click)="selectCipher.emit(cipher)"
+             [class.bg-accent]="activeCipher?.id === cipher.id"
+             class="px-3 py-3 hover:bg-accent rounded-lg cursor-pointer flex items-center gap-3 transition-colors">
+          
+          <div class="w-8 h-8 rounded bg-muted flex items-center justify-center shrink-0">
+            <img [src]="cipher.data.website | favicon" class="w-4 h-4 object-contain" />
+          </div>
+
+          <div class="flex-1 min-w-0">
+            <h3 class="font-medium text-sm truncate">{{ cipher.data.title }}</h3>
+            <p class="text-xs text-muted-foreground truncate">{{ cipher.data.username }}</p>
+          </div>
+        </div>
+      } @empty {
+        <div class="px-3 py-10 text-center text-sm text-muted-foreground">
+          Keine Ergebnisse gefunden.
+        </div>
+      }
+    </div>
+  </ng-scrollbar>
+
+</div>

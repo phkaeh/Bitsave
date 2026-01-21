@@ -1,0 +1,71 @@
+<div hlmSidebarWrapper>
+      <hlm-sidebar class="border-r border-sidebar-border **:border-r-0!">
+        <div hlmSidebarHeader>
+          <ul hlmSidebarMenu>
+            <li hlmSidebarMenuItem>
+              <button 
+                hlmSidebarMenuButton 
+                [hlmDropdownMenuTrigger]="userMenu" 
+                side="right" 
+                align="start"
+                class="w-full"
+              >
+                <img src="assets/Avatar.png" alt="User" class="h-8 w-8 rounded-lg object-cover"/>
+                <span class="text-sm font-medium tracking-tight truncate">
+                  {{ username() }}
+                </span>
+                <ng-icon hlm name="lucideChevronDown" class="ml-auto"/>
+              </button>
+
+              <ng-template #userMenu>
+                <hlm-dropdown-menu class="w-56 border border-border">
+                  <!-- <button hlmDropdownMenuItem> -->
+                    <!-- <ng-icon hlm size="sm" name="lucideSettings" class="mr-2" /> -->
+                    <!-- <span>Einstellungen</span> -->
+                  <!-- </button> -->
+                  <!-- <hlm-dropdown-menu-separator /> -->
+                  <button hlmDropdownMenuItem (click)="logout()">
+                    <ng-icon hlm size="sm" name="lucideLogOut"  class="mr-2" />
+                    <span>Ausloggen</span>
+                  </button>
+                </hlm-dropdown-menu>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+
+        <div hlmSidebarContent class="px-2">
+          <ul hlmSidebarMenu>
+            
+            <li hlmSidebarMenuItem>
+              <a hlmSidebarMenuButton routerLink="/allitems" routerLinkActive="bg-sidebar-accent" class="w-full flex items-center py-0!">
+                <div class="w-8 flex justify-center items-center mr-2">
+                  <ng-icon hlm size="sm" name="lucideInbox"/>
+                </div>
+                <span class="text-sm font-medium tracking-tight">Alle Objekte</span>
+              </a>
+            </li>
+
+            <li hlmSidebarMenuItem>
+              <a hlmSidebarMenuButton routerLink="/favorites" routerLinkActive="bg-sidebar-accent" class=" w-full flex items-center py-0!">
+                <div class="w-8 flex justify-center items-center mr-2">
+                  <ng-icon hlm size="sm" name="lucideStar"/>
+                </div>
+                <span class="text-sm font-medium tracking-tight">Favoriten</span>
+              </a>
+            </li>
+
+            <li hlmSidebarMenuItem>
+              <a hlmSidebarMenuButton routerLink="/trash" routerLinkActive="bg-sidebar-accent" class=" w-full flex items-center py-0!">
+                <div class="w-8 flex justify-center items-center mr-2">
+                  <ng-icon hlm size="sm" name="lucideTrash2"/>
+                </div>
+                <span class="text-sm font-medium tracking-tight">Papierkorb</span>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </hlm-sidebar>
+      <ng-content />
+    </div>

@@ -1,0 +1,47 @@
+<div class="flex items-start justify-center min-h-screen bg-background pt-20">
+  <section hlmCard class="border border-border w-full max-w-md">
+    <div hlmCardHeader>
+      <h2 hlmCardTitle class="text-center">E-Mail Verifizierung</h2>
+      <p hlmCardDescription class="text-center">
+        Code gesendet an <span class="text-primary font-semibold">{{ email() }}</span>
+      </p>
+    </div>
+    <div hlmCardContent>
+      <form class="flex flex-col gap-4" (ngSubmit)="onVerifyCodeSubmit()">
+        
+        @if (errorMessage()) {
+          <div class="text-sm text-destructive text-center">{{ errorMessage() }}</div>
+        }
+
+        <div class="flex gap-2 justify-center" (keydown)="handleKeyDown($event)">
+          @for (i of [0,1,2,3,4,5]; track i) {
+            <input hlmInput
+              type="text"
+              maxlength="1"
+              [attr.data-index]="i"
+              [value]="codeDigits()[i]"
+              (input)="handleCodeInput(i, $event)"
+              (paste)="handleCodePaste($event)"
+              class="w-12 h-14 text-center text-xl! font-bold p-0!"
+              [class.!border-destructive]="errorMessage()"
+              [disabled]="isSubmitting()" />
+          }
+        </div>
+
+        <button hlmBtn type="submit" class="w-full" [disabled]="!isCodeComplete() || isSubmitting()">
+          {{ isSubmitting() ? 'Verifiziere...' : 'Code verifizieren' }}
+        </button>
+
+        <div class="flex items-center justify-between text-sm">
+          <button hlmBtn variant="link" type="button" (click)="onResendCode()" 
+                  [disabled]="isSubmitting() || countdown() > 0">
+            Code erneut senden
+          </button>
+          @if (countdown() > 0) {
+            <span class="text-muted-foreground">Neuer Versuch in {{ countdown() }}s</span>
+          }
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
