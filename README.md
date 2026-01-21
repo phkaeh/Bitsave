@@ -35,7 +35,7 @@ If you download and install **Docker Desktop**, both Docker and Docker Compose a
 
 ```docker
 # Clone the repository
-git clone https://github.com/....
+git clone https://github.com/phkaeh/Bitsave
 cd Bitsave
 
 # Execute Docker Compose command
