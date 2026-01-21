@@ -23,6 +23,8 @@
 
 You can deploy Bitsave using Docker containers on Windows, macOS, and Linux distributions.
 
+**System Requirements:** At least a Quad-Core CPU (4 Threads) used for Argon2id key derivation. 
+
 ### **Requirements**
 
 - [**Docker**](https://www.docker.com/pricing/#/download)
