@@ -94,5 +94,6 @@ docker-compose down -v
 - **Data Portability (Import):** Migration tools to import data from other managers (via CSV/JSON).
 - **System Optimization & Security Hardening:** Focus on continuous performance tuning, high code-coverage testing, and architectural audits to ensure a fast, robust, and industry-standard security environment.
 
+--- 
 
 Built with ❤️
