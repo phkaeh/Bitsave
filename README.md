@@ -65,17 +65,9 @@ docker-compose down -v
 
 - **Disable Demo Mode:** Set `showDemo: false` in `bitsave-frontend/src/environments/environment.ts`.
 - **Real SMTP Mail:**
-    1. Set `SPRING_PROFILES_ACTIVE: prod` in `docker-compose.yml`.
-    2. Create `application-prod.yml` in the backend with your SMTP credentials:
-
-       ```yaml
-       spring:
-         mail:
-           host: smtp.gmail.com
-           username: your-email@gmail.com
-           password: your-app-password # 16-digit code
-       ```
-    
+    1. Set `SPRING_PROFILES_ACTIVE=prod` in `.env`.
+    2. Add your own `MAIL_USERNAME` and `MAIL_PASSWORD` in `.env`. If you use Gmail you need a 16-digit Google App Password. 
+- **Custom Domain:** To access the application from your own domain or server, you need to adjust `ALLOWED_ORIGINS` in your `.env` file.  
 
 
 ## 📺 Demo
