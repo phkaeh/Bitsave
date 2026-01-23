@@ -3,6 +3,7 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpEvent
 import { AuthService } from '../services/auth.service';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 /**
  * Intercepts all outgoing HTTP requests to attach the JWT access token.
@@ -22,26 +23,32 @@ export class AuthInterceptor implements HttpInterceptor {
    */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
+    let secureReq = req.clone({
+      setHeaders: { 
+        'X-API-KEY': environment.apiKey 
+      }
+    });
+    
     // Skip authentication headers for auth-related endpoints (Login, Register, etc.)
     if (req.url.includes('/v1/auth/')) {
-      return next.handle(req);
+      return next.handle(secureReq);
     }
     
     const accessToken = localStorage.getItem('access_token');
     
     // Attach the JWT token if present in localStorage
     if (accessToken) {
-      req = this.addToken(req, accessToken);
+      secureReq = this.addToken(secureReq, accessToken);
     }
 
-    return next.handle(req).pipe(
+    return next.handle(secureReq).pipe(
       catchError((error: HttpErrorResponse) => {
         /**
          * If the server returns 403 (Forbidden), the access token might be expired.
          * We attempt to refresh the token once, unless we are already on a refresh path.
          */
-        if (error.status === 403 && !req.url.includes('/refresh')) {
-          return this.handle403Error(req, next);
+        if (error.status === 403 && !secureReq.url.includes('/refresh')) {
+          return this.handle403Error(secureReq, next);
         }
         return throwError(() => error);
       })
@@ -61,17 +68,16 @@ export class AuthInterceptor implements HttpInterceptor {
    * Orchestrates the token refresh flow. If the refresh is successful, 
    * it retries the failed request with the new token.
    */
-  private handle403Error(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  private handle403Error(secureReq: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return this.authService.refreshToken().pipe(
       switchMap(() => {
         const newToken = localStorage.getItem('access_token');
         if (newToken) {
-          return next.handle(this.addToken(req, newToken));
+          return next.handle(this.addToken(secureReq, newToken)); 
         }
         return throwError(() => new Error('Token refresh failed: No new token received.'));
       }),
       catchError((err) => {
-        // If refresh also fails, log out the user
         this.authService.logout();
         return throwError(() => err);
       })

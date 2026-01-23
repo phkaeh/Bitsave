@@ -4,8 +4,8 @@ services:
     container_name: bitvault-db
     environment:
       POSTGRES_DB: jwt_security
-      POSTGRES_USER: ${DB_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -23,12 +23,17 @@ services:
     container_name: bitvault-backend
     environment:
       SPRING_JPA_SHOW_SQL: false
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
       DB_URL: jdbc:postgresql://postgres:5432/jwt_security
-      DB_USERNAME: ${DB_USERNAME:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
-      ALLOWED_ORIGINS: http://localhost
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      BITSAVE_API_KEY: ${BITSAVE_API_KEY}
       JPA_DDL_AUTO: update
     ports:
       - "8080:8080"

@@ -33,6 +33,9 @@ public class SecurityConfig {
     @Value("${app.cors.allowed-origins}")
     private List<String> allowedOrigins;
 
+    @Value("${app.api-key}")
+    private String apiKey;
+
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtService, userDetailsService);
@@ -42,6 +45,9 @@ public class SecurityConfig {
     public RateLimitingFilter rateLimitingFilter() {
         return new RateLimitingFilter();
     }
+
+    @Bean
+    public ApiKeyFilter apiKeyFilter() { return new ApiKeyFilter(apiKey); }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -57,9 +63,9 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider)
+                .addFilterBefore(apiKeyFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(rateLimitingFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 
@@ -72,7 +78,8 @@ public class SecurityConfig {
                 "Authorization",
                 "Content-Type",
                 "Accept",
-                "Origin"
+                "Origin",
+                "X-API-KEY"
         ));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);

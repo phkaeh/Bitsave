@@ -64,3 +64,4 @@ jwt:
 app:
   cors:
     allowed-origins: ${ALLOWED_ORIGINS:http://localhost,http://localhost:4200}
+  api-key: ${BITSAVE_API_KEY:your-secret-api-key}
