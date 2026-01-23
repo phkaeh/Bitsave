@@ -14,9 +14,19 @@
 - **UI Library:** Spartan NG
 - **Styling:** TailwindCSS
 - **Backend & API:** Java & Spring Boot (REST)
-- **Security:** Spring Security & JWT (Stateless Auth)
 - **Database:** PostgreSQL
 - **Containerization:** Docker & Docker Compose
+
+
+## 🛡️ Security
+
+- **Authentication:** Spring Security & JWT (Stateless Auth)
+- **Encryption:** Zero-Knowledge Architecture with client-side AES-GCM
+- **Key Derivation:** Argon2id with domain-separated salts
+- **Rate Limiting:** IP-based request throttling to prevent Brute-Force
+- **Hardening:** Request size limiting & strict CORS configuration
+- **Validation:** API key validation & strong input sanitization
+- **Web Security:** Content Security Policies (CSP) & Secure Headers (HSTS, XSS Protection)
 
 
 ## **🐋 Deploy**
@@ -67,7 +77,8 @@ docker-compose down -v
 - **Real SMTP Mail:**
     1. Set `SPRING_PROFILES_ACTIVE=prod` in `.env`.
     2. Add your own `MAIL_USERNAME` and `MAIL_PASSWORD` in `.env`. If you use Gmail you need a 16-digit Google App Password. 
-- **Custom Domain:** To access the application from your own domain or server, you need to adjust `ALLOWED_ORIGINS` in your `.env` file.  
+- **Custom Domain:** To access the application from your own domain or server, you need to adjust `ALLOWED_ORIGINS` in your `.env` file.
+- Always change the API key in your `.env` file and `bitsave-frontend/src/environments/environment.ts`.
 
 
 ## 📺 Demo
