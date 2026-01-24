@@ -42,6 +42,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -58,6 +59,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -74,6 +76,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -90,6 +93,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -106,6 +110,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -122,6 +127,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -147,6 +153,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                     .build();
 
             mockMvc.perform(post("/api/v1/auth/register")
+                            .header("X-API-KEY", apiKey)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isBadRequest());
@@ -171,6 +178,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -189,6 +197,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -205,6 +214,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -220,6 +230,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -235,6 +246,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -251,6 +263,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -270,6 +283,7 @@ class ValidationAndSecurityTests extends BaseIntegrationTest {
                 .build();
 
         mockMvc.perform(post("/api/v1/ciphers")
+                        .header("X-API-KEY", apiKey)
                         .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))

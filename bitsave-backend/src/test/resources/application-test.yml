@@ -34,7 +34,7 @@ jwt:
 app:
   cors:
     allowed-origins: http://localhost:4200
-
+  api-key: test-123
 logging:
   level:
     com.example.security: DEBUG

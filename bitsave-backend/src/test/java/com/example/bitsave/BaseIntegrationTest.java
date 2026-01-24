@@ -8,6 +8,7 @@ import com.example.bitsave.features.vault.repository.CipherRepository;
 import com.example.bitsave.features.verification.repository.VerificationCodeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,6 +42,9 @@ public abstract class BaseIntegrationTest {
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
+
+    @Value("${app.api-key}")
+    protected String apiKey;
 
     @BeforeEach
     void baseSetUp() {

@@ -47,6 +47,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
                 .build();
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/register")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -76,6 +77,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
                 .build();
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/register")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -92,6 +94,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
                 .build();
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/register")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -109,6 +112,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
                 .build();
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/register")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -128,6 +132,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
                 .build();
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/login")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -146,6 +151,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
                 .build();
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/login")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -161,6 +167,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
                 .build();
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/login")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -179,6 +186,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
                 .build();
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/refresh-token")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -205,6 +213,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
                 .build();
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/refresh-token")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -219,6 +228,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
                 .build();
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/refresh-token")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -237,6 +247,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
                 .build();
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/is-token-valid")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -259,6 +270,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
                 .build();
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/is-token-valid")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -277,6 +289,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
         }
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/demo-login")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON));
 
 
@@ -302,6 +315,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
         java.util.Map<String, String> request = java.util.Map.of("email", "personalized@test.com");
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/user-info")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 
@@ -316,6 +330,7 @@ class AuthenticationControllerTest extends BaseIntegrationTest {
         java.util.Map<String, String> request = java.util.Map.of("email", "not-found@test.com");
 
         ResultActions result = mockMvc.perform(post("/api/v1/auth/user-info")
+                .header("X-API-KEY", apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)));
 

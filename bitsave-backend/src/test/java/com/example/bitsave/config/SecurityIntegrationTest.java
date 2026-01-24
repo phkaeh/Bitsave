@@ -25,11 +25,13 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
     @DisplayName("Should allow access to public endpoints without authentication")
     void shouldAllowAccessToPublicEndpointsWithoutAuth() throws Exception {
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isBadRequest()); // Bad request due to validation, not unauthorized
 
         mockMvc.perform(post("/api/v1/auth/login")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isBadRequest()); // Bad request due to validation, not unauthorized
@@ -49,6 +51,7 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
         String token = getBearerToken(user);
 
         mockMvc.perform(get("/api/v1/ciphers")
+                        .header("X-API-KEY", apiKey)
                         .header("Authorization", token))
                 .andExpect(status().isOk());
     }
@@ -64,6 +67,7 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
         );
 
         mockMvc.perform(get("/api/v1/ciphers")
+                        .header("X-API-KEY", apiKey)
                         .header("Authorization", "Bearer " + expiredToken))
                 .andExpect(status().isForbidden());
     }
@@ -74,6 +78,7 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
         String malformedToken = "this.is.not.a.valid.jwt";
 
         mockMvc.perform(get("/api/v1/ciphers")
+                        .header("X-API-KEY", apiKey)
                         .header("Authorization", "Bearer " + malformedToken))
                 .andExpect(status().isForbidden());
     }
@@ -85,6 +90,7 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
         String token = generateAccessToken(user);
 
         mockMvc.perform(get("/api/v1/ciphers")
+                        .header("X-API-KEY", apiKey)
                         .header("Authorization", token))
                 .andExpect(status().isForbidden());
     }
@@ -97,6 +103,7 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
         String tamperedToken = validToken.substring(0, validToken.length() - 10) + "TAMPERED!!";
 
         mockMvc.perform(get("/api/v1/ciphers")
+                        .header("X-API-KEY", apiKey)
                         .header("Authorization", "Bearer " + tamperedToken))
                 .andExpect(status().isForbidden());
     }
@@ -108,6 +115,7 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
         String token = getBearerToken(user);
 
         mockMvc.perform(get("/api/v1/ciphers")
+                        .header("X-API-KEY", apiKey)
                         .header("Authorization", token))
                 .andExpect(status().isOk());
     }
@@ -118,6 +126,7 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
         //Make 5 requests (well within limit of 150)
         for (int i = 0; i < 5; i++) {
             mockMvc.perform(post("/api/v1/auth/register")
+                            .header("X-API-KEY", apiKey)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content("{}"))
                     .andExpect(status().isBadRequest()); // Validation error, not rate limited
@@ -131,12 +140,14 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
         //Make 151 requests from same IP
         for (int i = 0; i < 150; i++) {
             mockMvc.perform(post("/api/v1/auth/register")
+                    .header("X-API-KEY", apiKey)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{}"));
         }
 
         //151st request should be rate limited
         mockMvc.perform(post("/api/v1/auth/register")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isTooManyRequests());
@@ -148,6 +159,7 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
 
     void shouldHandleCorsPreflightRequests() throws Exception {
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options("/api/v1/auth/login")
+                        .header("X-API-KEY", apiKey)
                         .header("Origin", "http://localhost:4200")
                         .header("Access-Control-Request-Method", "POST"))
                 .andExpect(status().isOk());
@@ -157,6 +169,7 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
     @DisplayName("Should include CORS headers in response")
     void shouldIncludeCorsHeadersInResponse() throws Exception {
         ResultActions result = mockMvc.perform(post("/api/v1/auth/register")
+                .header("X-API-KEY", apiKey)
                 .header("Origin", "http://localhost:4200")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"));
@@ -173,6 +186,7 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
         String token = getBearerToken(user);
 
         ResultActions result = mockMvc.perform(get("/api/v1/ciphers")
+                .header("X-API-KEY", apiKey)
                 .header("Authorization", token));
 
         result.andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -195,6 +209,7 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
         cipherRepository.save(cipher);
 
         mockMvc.perform(get("/api/v1/ciphers/" + cipher.getId())
+                        .header("X-API-KEY", apiKey)
                         .header("Authorization", getBearerToken(user1)))
                 .andExpect(status().isNotFound()); // Should not reveal existence
     }
@@ -205,6 +220,7 @@ class SecurityIntegrationTest extends BaseIntegrationTest {
         createTestUser("disabled@test.com", "password", false);
 
         mockMvc.perform(post("/api/v1/auth/verify")
+                        .header("X-API-KEY", apiKey)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"code\":\"123456\",\"email\":\"disabled@test.com\"}"))
                 .andExpect(status().isBadRequest()); // Bad request, not forbidden
