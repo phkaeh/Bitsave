@@ -1,5 +1,7 @@
 # Bitsave🛡️
 
+![Build Status](https://github.com/phkaeh/Bitsave/actions/workflows/pipeline.yml/badge.svg)
+
 **Bitsave** is a secure, lightweight password management solution designed to provide a centralized vault for your digital credentials. It bridges the gap between complex enterprise tools and insecure browser storage, offering a clean, distraction-free environment to manage and access your secrets.
 
 ### ⚠️ Security Notice (Development Status)

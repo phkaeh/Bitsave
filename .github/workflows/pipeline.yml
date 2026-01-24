@@ -1,0 +1,27 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      # Backend Tests
+      - name: Test Backend
+        working-directory: backend
+        run: ./gradlew test
+      
+      # Frontend Tests
+      - name: Test Frontend
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run test:ci
+      
+      # Build & Push
+      - name: Build Images
+        run: docker-compose build
