@@ -25,4 +25,4 @@ jobs:
       
       # Build & Push
       - name: Build Images
-        run: docker-compose build
+        run: docker compose build
