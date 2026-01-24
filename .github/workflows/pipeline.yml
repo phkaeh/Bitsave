@@ -12,12 +12,12 @@ jobs:
       
       # Backend Tests
       - name: Test Backend
-        working-directory: backend
+        working-directory: bitsave-backend
         run: ./gradlew test
       
       # Frontend Tests
       - name: Test Frontend
-        working-directory: frontend
+        working-directory: bitsave-frontend
         run: |
           npm ci
           npm run test:ci
