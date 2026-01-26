@@ -48,6 +48,10 @@ services:
       context: ./bitsave-frontend
       dockerfile: Dockerfile
     container_name: bitvault-frontend
+    environment:
+      API_URL: ${API_URL}
+      BITSAVE_API_KEY: ${BITSAVE_API_KEY}
+      SHOW_DEMO: ${SHOW_DEMO}
     ports:
       - "80:80"
     depends_on:

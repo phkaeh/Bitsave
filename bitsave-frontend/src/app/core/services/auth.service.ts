@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { from, Observable, of, tap , throwError} from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
 import { CryptoService } from './crypto.service';
 import { VaultService } from './vault.service';
+import { ConfigService } from './config.service';
 
 interface SignUpRequest {
   firstname: string;
@@ -60,12 +60,15 @@ export interface LoginFormValues {
   providedIn: 'root'
 })
 export class AuthService {
-
-  private apiUrl = `${environment.apiUrl}`;
+  private readonly config = inject(ConfigService);  
   private readonly http = inject(HttpClient);
   private readonly cryptoService = inject(CryptoService);
   private readonly router = inject(Router);
   private readonly vaultService = inject(VaultService);
+
+  private get baseUrl() {
+    return this.config.apiUrl; 
+  }
 
   /**
    * Registers a new user.
@@ -87,7 +90,7 @@ export class AuthService {
           passwordHash: authKey
         };
         return this.http.post<AuthResponse>(
-          `${this.apiUrl}/v1/auth/register`, 
+          `${this.baseUrl}/v1/auth/register`, 
           credentials, 
           { responseType: 'text' as 'json' }
         ).pipe(
@@ -118,7 +121,7 @@ export class AuthService {
           email: values.email,
           passwordHash: authKey
         };
-        return this.http.post(`${this.apiUrl}/v1/auth/login`, loginRequest, { 
+        return this.http.post(`${this.baseUrl}/v1/auth/login`, loginRequest, { 
           responseType: 'text' 
         }).pipe(
           switchMap(() => this.getUserInfo(values.email)),
@@ -142,7 +145,7 @@ export class AuthService {
    */
   verify(code: string, email: string): Observable<AuthResponse> {
     const request: CodeRequest = {code, email};
-    return this.http.post<AuthResponse>(`${this.apiUrl}/v1/auth/verify`, request)
+    return this.http.post<AuthResponse>(`${this.baseUrl}/v1/auth/verify`, request)
       .pipe(
         tap(response => {
           if (response.accessToken && response.refreshToken) {
@@ -161,7 +164,7 @@ export class AuthService {
    */
   resendCode(email: string): Observable<AuthResponse> {
     const resendCode: ResendCodeRequest = {email: email};
-    return this.http.post<AuthResponse>(`${this.apiUrl}/v1/auth/resend-code`, resendCode, {responseType: 'text' as 'json'})
+    return this.http.post<AuthResponse>(`${this.baseUrl}/v1/auth/resend-code`, resendCode, {responseType: 'text' as 'json'})
       .pipe(
         catchError(error => throwError(() => error))
       );
@@ -182,7 +185,7 @@ export class AuthService {
     const token = this.getRefreshToken();
     const body = { token: token };
 
-    return this.http.post<boolean>(`${this.apiUrl}/v1/auth/is-token-valid`, body)
+    return this.http.post<boolean>(`${this.baseUrl}/v1/auth/is-token-valid`, body)
       .pipe(
         catchError(() => of(false))
       );
@@ -202,7 +205,7 @@ export class AuthService {
 
     const body = { refreshToken: refreshToken };
 
-    return this.http.post<AuthResponse>(`${this.apiUrl}/v1/auth/refresh-token`, body)
+    return this.http.post<AuthResponse>(`${this.baseUrl}/v1/auth/refresh-token`, body)
       .pipe(
         tap(response => {
           if (response.accessToken) localStorage.setItem('access_token', response.accessToken);
@@ -250,7 +253,7 @@ export class AuthService {
 
     return from(this.cryptoService.deriveEncryptionKey(demoPassword, demoEmail)).pipe(
       switchMap(encryptionKey => {
-        return this.http.post<AuthResponse>(`${this.apiUrl}/v1/auth/demo-login`, {}).pipe(
+        return this.http.post<AuthResponse>(`${this.baseUrl}/v1/auth/demo-login`, {}).pipe(
           tap(response => {
             if (response.accessToken && response.refreshToken) {
               localStorage.setItem('access_token', response.accessToken);
@@ -271,7 +274,7 @@ export class AuthService {
    * @returns An Observable containing the UserInfo (firstname, lastname).
    */
   getUserInfo(email: string): Observable<UserInfo> {
-    return this.http.post<UserInfo>(`${this.apiUrl}/v1/auth/user-info`, { email }).pipe(
+    return this.http.post<UserInfo>(`${this.baseUrl}/v1/auth/user-info`, { email }).pipe(
       catchError(error => throwError(() => error))
     );
   }

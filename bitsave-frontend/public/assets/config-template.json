@@ -1,0 +1,5 @@
+{
+  "apiUrl": "${API_URL}",
+  "apiKey": "${BITSAVE_API_KEY}",
+  "showDemo": "${SHOW_DEMO}"
+}

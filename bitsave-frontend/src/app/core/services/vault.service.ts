@@ -1,8 +1,8 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap, catchError, throwError, switchMap, from } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { CryptoService } from './crypto.service';
+import { ConfigService } from './config.service';
 
 export interface Cipher {
   id: string;
@@ -31,7 +31,10 @@ export interface CipherRequest {
   providedIn: 'root',
 })
 export class VaultService {
-  private apiUrl = `${environment.apiUrl}`;
+  private readonly config = inject(ConfigService);
+  private get baseUrl() {
+    return this.config.apiUrl;
+  }
 
   /** The master list of all decrypted vault items. */
   ciphers = signal<Cipher[]>([]);
@@ -88,7 +91,7 @@ export class VaultService {
    * @returns An Observable of the decrypted Cipher array.
    */
   getAllCiphers(key: CryptoKey): Observable<Cipher[]> {
-    return this.http.get<Cipher[]>(`${this.apiUrl}/v1/ciphers`).pipe(
+    return this.http.get<Cipher[]>(`${this.baseUrl}/v1/ciphers`).pipe(
       switchMap(async (data) => {
         const decryptedCiphers = await Promise.all(
           data.map(async (cipher) => {
@@ -117,7 +120,7 @@ export class VaultService {
     return from(this.cryptoService.encrypt(request.data, key)).pipe(
       switchMap(encryptedData => {
         const encryptedRequest = { ...request, data: encryptedData };
-        return this.http.put<Cipher>(`${this.apiUrl}/v1/ciphers/${id}`, encryptedRequest);
+        return this.http.put<Cipher>(`${this.baseUrl}/v1/ciphers/${id}`, encryptedRequest);
       }),
       switchMap(async (updated) => ({
         ...updated,
@@ -141,7 +144,7 @@ export class VaultService {
     return from(this.cryptoService.encrypt(request.data, key)).pipe(
       switchMap(encryptedData => {
         const encryptedRequest = { ...request, data: encryptedData };
-        return this.http.post<Cipher>(`${this.apiUrl}/v1/ciphers`, encryptedRequest);
+        return this.http.post<Cipher>(`${this.baseUrl}/v1/ciphers`, encryptedRequest);
       }),
       switchMap(async (newCipher: Cipher) => {
         const decryptedData = request.data;
@@ -162,7 +165,7 @@ export class VaultService {
    * @param id - Identifier of the cipher to be trashed.
    */
   deleteCipher(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/v1/ciphers/${id}`).pipe(
+    return this.http.delete<void>(`${this.baseUrl}/v1/ciphers/${id}`).pipe(
       tap(() => {
         this.ciphers.update(current => 
           current.map(c => c.id === id 
@@ -182,7 +185,7 @@ export class VaultService {
    * @param id - Identifier of the cipher to be removed.
    */
   permanentDeleteCipher(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/v1/ciphers/${id}/permanent-delete`).pipe(
+    return this.http.delete<void>(`${this.baseUrl}/v1/ciphers/${id}/permanent-delete`).pipe(
       tap(() => {
         this.updateCiphersAfterDeletion(id);
       })
@@ -194,7 +197,7 @@ export class VaultService {
    * @param id - Identifier of the cipher to be restored.
    */
   restoreCipher(id: string): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/v1/ciphers/${id}/restore`, {}).pipe(
+    return this.http.post<void>(`${this.baseUrl}/v1/ciphers/${id}/restore`, {}).pipe(
       tap(() => {
         this.ciphers.update(current => 
           current.map(c => c.id === id 

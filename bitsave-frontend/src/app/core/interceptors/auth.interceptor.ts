@@ -3,7 +3,7 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpEvent
 import { AuthService } from '../services/auth.service';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { ConfigService } from '../services/config.service';
 
 /**
  * Intercepts all outgoing HTTP requests to attach the JWT access token.
@@ -16,16 +16,20 @@ import { environment } from '../../../environments/environment';
 export class AuthInterceptor implements HttpInterceptor {
   
   private readonly authService = inject(AuthService);
-  
+  private readonly config = inject(ConfigService);
   /**
    * Intercepts the HTTP request, clones it to add the Authorization header,
    * and handles 403 errors for token refreshing.
    */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
+    if (req.url.includes('config.json')) {
+      return next.handle(req);
+    }
+    
     let secureReq = req.clone({
       setHeaders: { 
-        'X-API-KEY': environment.apiKey 
+        'X-API-KEY': this.config.apiKey
       }
     });
     

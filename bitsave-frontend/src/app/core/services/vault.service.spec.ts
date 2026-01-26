@@ -3,20 +3,27 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { VaultService, Cipher, CipherRequest } from './vault.service';
 import { CryptoService } from './crypto.service';
-import { environment } from '../../../environments/environment';
 import { provideHttpClient } from "@angular/common/http";
+import { ConfigService } from "./config.service";
 
 describe('VaultService', () => {
     let service: VaultService;
     let httpMock: HttpTestingController;
     let cryptoService: MockedObject<CryptoService>;
     let mockKey: CryptoKey;
+    let configService: ConfigService;
 
     const mockCipherData = {
         title: 'Test Login',
         username: 'testuser',
         password: 'testpass',
         website: 'https://test.com'
+    };
+
+    const mockConfigService = {
+        apiUrl: 'http://localhost:8080/api',
+        apiKey: 'test-api-key',
+        isDemoMode: true
     };
 
     const mockEncryptedCipher: Cipher = {
@@ -47,12 +54,14 @@ describe('VaultService', () => {
                 VaultService,
                 provideHttpClient(),
                 provideHttpClientTesting(), 
-                { provide: CryptoService, useValue: cryptoSpy }
+                { provide: CryptoService, useValue: cryptoSpy },
+                { provide: ConfigService, useValue: mockConfigService }
             ]
         });
 
         service = TestBed.inject(VaultService);
         httpMock = TestBed.inject(HttpTestingController);
+        configService = TestBed.inject(ConfigService);
         cryptoService = TestBed.inject(CryptoService) as MockedObject<CryptoService>;
     });
 
@@ -186,7 +195,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers`);
             expect(req.request.method).toBe('GET');
             req.flush(encryptedCiphers);
         });
@@ -202,7 +211,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers`);
             req.flush([]);
         });
 
@@ -218,7 +227,7 @@ describe('VaultService', () => {
             
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers`);
             req.flush([mockEncryptedCipher]);
         });
     });
@@ -244,7 +253,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers`);
             expect(req.request.method).toBe('POST');
             expect(req.request.body.data).toBe('encrypted-blob');
             req.flush(mockEncryptedCipher);
@@ -268,7 +277,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers`);
             req.flush(mockEncryptedCipher);
         });
     });
@@ -295,7 +304,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers/123`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers/123`);
             expect(req.request.method).toBe('PUT');
             expect(req.request.body.data).toBe('new-encrypted-blob');
             req.flush({ ...mockEncryptedCipher, id: '123' });
@@ -321,7 +330,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers/123`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers/123`);
             req.flush(mockEncryptedCipher);
         });
     });
@@ -340,7 +349,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers/123`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers/123`);
             expect(req.request.method).toBe('DELETE');
             req.flush(null);
         });
@@ -358,7 +367,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers/123`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers/123`);
             req.flush(null);
         });
     });
@@ -376,7 +385,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers/123/permanent-delete`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers/123/permanent-delete`);
             expect(req.request.method).toBe('DELETE');
             req.flush(null);
         });
@@ -394,7 +403,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers/123/permanent-delete`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers/123/permanent-delete`);
             req.flush(null);
         });
     });
@@ -414,7 +423,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers/123/restore`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers/123/restore`);
             expect(req.request.method).toBe('POST');
             req.flush(null);
         });
@@ -431,7 +440,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers`);
             req.flush('Server error', { status: 500, statusText: 'Internal Server Error' });
         });
 
@@ -453,7 +462,7 @@ describe('VaultService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/ciphers`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/ciphers`);
             req.flush('Unauthorized', { status: 401, statusText: 'Unauthorized' });
         });
     });

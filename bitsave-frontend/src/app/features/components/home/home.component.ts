@@ -4,10 +4,10 @@ import { HlmCardImports } from '@spartan-ng/helm/card';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { AuthService } from '../../../core/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import { CommonModule } from '@angular/common'
 import { HlmToasterImports } from '@spartan-ng/helm/sonner';
 import { toast } from 'ngx-sonner';
+import { ConfigService } from '../../../core/services/config.service';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +19,8 @@ export class Home implements OnInit {
   
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
-
+  private readonly config = inject(ConfigService);
+  
   ngOnInit() {
     const reason = sessionStorage.getItem('vault_locked_reason');
     if (reason === 'ram_cleared') {
@@ -29,8 +30,8 @@ export class Home implements OnInit {
       sessionStorage.removeItem('vault_locked_reason');
     }
   }
-  
-  isDemoVisible = signal(environment.showDemo);
+
+  isDemoVisible = signal(this.config.isDemoMode);
 
   onLogin() {
     this.router.navigate(['/login']);
@@ -41,7 +42,7 @@ export class Home implements OnInit {
   }
 
   async onDemoLogin(): Promise<void> {
-    const demoData = environment.demo;
+    const demoData = this.config.demoUser;
 
     localStorage.setItem('user_email', demoData.email);
     localStorage.setItem('user_firstname', demoData.firstname);

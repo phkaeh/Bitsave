@@ -4,19 +4,26 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { Router } from '@angular/router';
 import { AuthService, SignUpFormValues, LoginFormValues, AuthResponse } from './auth.service';
 import { CryptoService } from './crypto.service';
-import { environment } from '../../../environments/environment';
-import { of } from "rxjs";
+import { config, of } from "rxjs";
 import { provideHttpClient } from "@angular/common/http";
+import { ConfigService } from "./config.service";
 
 describe('AuthService', () => {
     let service: AuthService;
     let httpMock: HttpTestingController;
     let cryptoService: MockedObject<CryptoService>;
     let router: MockedObject<Router>;
+    let configService: ConfigService;
 
     const mockAuthResponse: AuthResponse = {
         accessToken: 'mock-access-token',
         refreshToken: 'mock-refresh-token'
+    };
+
+    const mockConfigService = {
+        apiUrl: 'http://localhost:8080/api',
+        apiKey: 'test-api-key',
+        isDemoMode: true
     };
 
     const mockUserInfo = {
@@ -47,7 +54,8 @@ describe('AuthService', () => {
                 provideHttpClient(),
                 provideHttpClientTesting(), 
                 { provide: CryptoService, useValue: cryptoSpy },
-                { provide: Router, useValue: routerSpy }
+                { provide: Router, useValue: routerSpy },
+                { provide: ConfigService, useValue: mockConfigService }
             ]
         });
 
@@ -55,6 +63,7 @@ describe('AuthService', () => {
         httpMock = TestBed.inject(HttpTestingController);
         cryptoService = TestBed.inject(CryptoService) as MockedObject<CryptoService>;
         router = TestBed.inject(Router) as MockedObject<Router>;
+        configService = TestBed.inject(ConfigService);
 
         localStorage.clear();
     });
@@ -90,7 +99,7 @@ describe('AuthService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/register`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/register`);
             expect(req.request.method).toBe('POST');
             expect(req.request.body).toEqual({
                 firstname: 'Alice',
@@ -123,7 +132,7 @@ describe('AuthService', () => {
             
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/register`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/register`);
             req.flush('Success');
         });
 
@@ -147,7 +156,7 @@ describe('AuthService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/register`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/register`);
             req.flush('Email already exists', { status: 409, statusText: 'Conflict' });
         });
     });
@@ -179,11 +188,11 @@ describe('AuthService', () => {
 
         await flushPromises();
 
-        const loginReq = httpMock.expectOne(`${environment.apiUrl}/v1/auth/login`);
+        const loginReq = httpMock.expectOne(`${configService.apiUrl}/v1/auth/login`);
         expect(loginReq.request.method).toBe('POST');
         loginReq.flush('Login successful'); 
 
-        const infoReq = httpMock.expectOne(`${environment.apiUrl}/v1/auth/user-info`);
+        const infoReq = httpMock.expectOne(`${configService.apiUrl}/v1/auth/user-info`);
         expect(infoReq.request.method).toBe('POST');
         expect(infoReq.request.body).toEqual({ email: testEmail });
         infoReq.flush(mockUserInfo);
@@ -207,7 +216,7 @@ describe('AuthService', () => {
             
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/login`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/login`);
             req.flush('Unauthorized', { status: 401, statusText: 'Unauthorized' });
         });
     });
@@ -227,7 +236,7 @@ describe('AuthService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/verify`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/verify`);
             expect(req.request.body).toEqual({ code, email: testEmail });
             req.flush(mockAuthResponse);
         });
@@ -242,7 +251,7 @@ describe('AuthService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/verify`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/verify`);
             req.flush('Invalid code', { status: 400, statusText: 'Bad Request' });
         });
     });
@@ -258,7 +267,7 @@ describe('AuthService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/resend-code`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/resend-code`);
             expect(req.request.body).toEqual({ email: testEmail });
             req.flush('Code sent');
         });
@@ -286,7 +295,7 @@ describe('AuthService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/is-token-valid`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/is-token-valid`);
             req.flush(true);
         });
 
@@ -302,7 +311,7 @@ describe('AuthService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/is-token-valid`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/is-token-valid`);
             req.flush(null, { status: 401, statusText: 'Unauthorized' });
         });
 
@@ -321,7 +330,7 @@ describe('AuthService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/refresh-token`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/refresh-token`);
             req.flush(mockAuthResponse);
         });
 
@@ -339,7 +348,7 @@ describe('AuthService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/refresh-token`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/refresh-token`);
             req.flush(null, { status: 401, statusText: 'Unauthorized' });
         });
     });
@@ -388,7 +397,7 @@ describe('AuthService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/demo-login`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/demo-login`);
             req.flush(mockAuthResponse);
         });
 
@@ -405,7 +414,7 @@ describe('AuthService', () => {
 
             await flushPromises();
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/demo-login`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/demo-login`);
             req.flush(mockAuthResponse);
         });
     });
@@ -415,7 +424,7 @@ describe('AuthService', () => {
                 expect(info).toEqual(mockUserInfo);
             });
 
-            const req = httpMock.expectOne(`${environment.apiUrl}/v1/auth/user-info`);
+            const req = httpMock.expectOne(`${configService.apiUrl}/v1/auth/user-info`);
             expect(req.request.method).toBe('POST');
             expect(req.request.body).toEqual({ email: testEmail });
             req.flush(mockUserInfo);

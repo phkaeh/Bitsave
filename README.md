@@ -75,12 +75,11 @@ docker-compose down -v
 
 ## ⚙️ Custom Configuration
 
-- **Disable Demo Mode:** Set `showDemo: false` in `bitsave-frontend/src/environments/environment.ts`.
+- **Disable Demo Mode:** Set `showDemo: false` in your `.env` file.
 - **Real SMTP Mail:**
-    1. Set `SPRING_PROFILES_ACTIVE=prod` in `.env`.
-    2. Add your own `MAIL_USERNAME` and `MAIL_PASSWORD` in `.env`. If you use Gmail you need a 16-digit Google App Password. 
-- **Custom Domain:** To access the application from your own domain or server, you need to adjust `ALLOWED_ORIGINS` in your `.env` file.
-- Always change the API key in your `.env` file and `bitsave-frontend/src/environments/environment.ts`.
+    1. Set `SPRING_PROFILES_ACTIVE=prod` in your `.env` file.
+    2. Add your own `MAIL_USERNAME` and `MAIL_PASSWORD` in your `.env` file. If you use Gmail you need a 16-digit Google App Password. 
+- **Custom Domain:** To access the application from your own domain or server, you need to adjust `ALLOWED_ORIGINS` and `API_URL` in your `.env` file.
 
 
 ## 📺 Demo

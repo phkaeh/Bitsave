@@ -35,6 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-### Custom Sensitive Files ###
-src/main/resources/application-prod.yml
