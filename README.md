@@ -74,7 +74,7 @@ docker-compose down -v
 
 
 ## ⚙️ Custom Configuration
-
+To customize the application, create a `.env` file in the root directory of the project. You can use the following options to adjust the behavior:
 - **Disable Demo Mode:** Set `showDemo: false` in your `.env` file.
 - **Real SMTP Mail:**
     1. Set `SPRING_PROFILES_ACTIVE=prod` in your `.env` file.

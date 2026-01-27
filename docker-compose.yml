@@ -4,8 +4,8 @@ services:
     container_name: bitvault-db
     environment:
       POSTGRES_DB: jwt_security
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-yoursecurepassword}
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -23,17 +23,17 @@ services:
     container_name: bitvault-backend
     environment:
       SPRING_JPA_SHOW_SQL: false
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
       DB_URL: jdbc:postgresql://postgres:5432/jwt_security
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
-      MAIL_HOST: ${MAIL_HOST}
-      MAIL_PORT: ${MAIL_PORT}
-      MAIL_USERNAME: ${MAIL_USERNAME}
-      MAIL_PASSWORD: ${MAIL_PASSWORD}
-      BITSAVE_API_KEY: ${BITSAVE_API_KEY}
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-yoursecurepassword}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-cc8d022f337520cb0e9d7f8273958e80d33819efaae4ea7178188559b785c0dd}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost,http://localhost:4200}
+      MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME:-your-email@gmail.com}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-your-app-password}
+      BITSAVE_API_KEY: ${BITSAVE_API_KEY:-your-api-key}
       JPA_DDL_AUTO: update
     ports:
       - "8080:8080"
@@ -49,9 +49,9 @@ services:
       dockerfile: Dockerfile
     container_name: bitvault-frontend
     environment:
-      API_URL: ${API_URL}
-      BITSAVE_API_KEY: ${BITSAVE_API_KEY}
-      SHOW_DEMO: ${SHOW_DEMO}
+      API_URL: ${API_URL:-http://localhost:8080/api}
+      BITSAVE_API_KEY: ${BITSAVE_API_KEY:-your-api-key}
+      SHOW_DEMO: ${SHOW_DEMO:-true}
     ports:
       - "80:80"
     depends_on:
