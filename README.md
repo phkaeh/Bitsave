@@ -30,12 +30,16 @@
 - **Validation:** API key validation & strong input sanitization
 - **Web Security:** Content Security Policies (CSP) & Secure Headers (HSTS, XSS Protection)
 
+<details>
+  <summary><strong>End-to-End Encryption Flow</strong></summary>
+
+  ![Flowchart showing the client-side encryption and authentication process](./encryption.PNG)
+
+</details>
 
 ## **🐋 Deploy**
 
 You can deploy Bitsave using Docker containers on Windows, macOS, and Linux distributions.
-
-**System Requirements:** At least a Quad-Core CPU (4 Threads) used for Argon2id key derivation. 
 
 ### **Requirements**
 
