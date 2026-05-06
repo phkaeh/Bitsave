@@ -19,7 +19,7 @@ jobs:
       - name: Test Frontend
         working-directory: bitsave-frontend
         run: |
-          npm ci
+          npm ci --legacy-peer-deps
           npx playwright install chromium --with-deps
           npm run test:ci
       
