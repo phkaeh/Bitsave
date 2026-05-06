@@ -2,6 +2,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "4.0.0"
 	id("io.spring.dependency-management") version "1.1.7"
+	id("checkstyle")
 }
 
 group = "com.bitsave"
@@ -21,6 +22,12 @@ configurations {
 
 repositories {
 	mavenCentral()
+}
+
+checkstyle {
+    toolVersion = "10.15.0" 
+    configFile = file("config/checkstyle/checkstyle.xml")
+    isIgnoreFailures = false
 }
 
 dependencies {
