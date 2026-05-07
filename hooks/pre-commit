@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+errors = []
+gradle_cmd = Gem.win_platform? ? "gradlew.bat" : "./gradlew"
+
+staged_java = `git diff --cached --name-only`.split.select { |f| f.end_with?(".java") }
+staged_ts = `git diff --cached --name-only`.split.select { |f| f.end_with?(".ts") }
+
+if staged_ts.any?
+  print "Checking Angular lint... "
+  if system("cd bitsave-frontend && npx ng lint --max-warnings=0", out: File::NULL, err: File::NULL)
+    puts "OK"
+  else
+    puts "FAILED"
+    errors << "Angular lint failed"
+  end
+else
+  puts "No TS files staged – skipping lint"
+end
+
+if staged_java.any?
+  print "Checking Checkstyle...   "
+  if system("cd bitsave-backend && #{gradle_cmd} checkstyleMain -q", out: File::NULL, err: File::NULL)
+    puts "OK"
+  else
+    puts "FAILED"
+    errors << "Checkstyle failed"
+  end
+else
+  puts "No Java files staged – skipping Checkstyle"
+end
+
+unless errors.empty?
+  puts "\nCommit blocked:"
+  errors.each { |e| puts "  - #{e}" }
+  exit 1
+end
+
+puts "\nAll checks passed – committing!"
+exit 0
