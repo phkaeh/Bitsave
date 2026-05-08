@@ -36,7 +36,7 @@ services:
       BITSAVE_API_KEY: ${BITSAVE_API_KEY:-your-api-key}
       JPA_DDL_AUTO: update
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     depends_on:
       postgres:
         condition: service_healthy
@@ -53,7 +53,7 @@ services:
       BITSAVE_API_KEY: ${BITSAVE_API_KEY:-your-api-key}
       SHOW_DEMO: ${SHOW_DEMO:-true}
     ports:
-      - "80:80"
+      - "127.0.0.1:3000:80"
     depends_on:
       - backend
     networks:
