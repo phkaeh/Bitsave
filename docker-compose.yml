@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:18-alpine
+    image: postgres:16-alpine
     container_name: bitvault-db
     environment:
       POSTGRES_DB: jwt_security

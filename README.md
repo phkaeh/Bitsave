@@ -62,7 +62,7 @@ docker compose up -d --build
 
 **Note:** Run without `-d` to use the terminal as your **"Virtual Inbox"**. Since no real emails  are sent in this demo, find your login codes directly in the backend logs.
 
-- **Frontend:** http://localhost/
+- **Frontend:** http://localhost:3000
 - **Backend**: http://localhost:8080
 
 
